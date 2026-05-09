@@ -294,7 +294,7 @@ h1 {
 }
 
 .close-btn {
-    background: rgba(255, 128, 0, 0.675) !important;
+    background: red !important;
 }
 
 /* PAGINATION */
