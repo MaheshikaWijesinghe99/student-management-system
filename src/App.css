@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 50px 0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #38bdf8;
+}
+
+.form-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.form-container input {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    width: 250px;
+}
+
+.form-container button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    background: #38bdf8;
+    color: white;
+    cursor: pointer;
+}
+
+.students-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 30px;
+}
+
+.student-card {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 20px;
+}
+
+.student-card h2 {
+    margin-bottom: 15px;
+    color: #38bdf8;
+}
+
+.student-card p {
+    margin-bottom: 10px;
+}
+
+.delete-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: red;
+    color: white;
+    cursor: pointer;
+}
