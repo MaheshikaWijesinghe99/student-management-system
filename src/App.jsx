@@ -34,6 +34,9 @@ function App() {
 
     const [darkMode, setDarkMode] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const studentsPerPage = 4;
 
     const studentsCollection = collection(db, 'students');
     const chartData = [
@@ -42,7 +45,17 @@ function App() {
             total: students.length,
         },
     ];
+const indexOfLastStudent = currentPage * studentsPerPage;
 
+const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+
+const currentStudents = students
+    .filter((student) => student.name.toLowerCase().includes(search.toLowerCase()))
+    .slice(indexOfFirstStudent, indexOfLastStudent);
+
+const totalPages = Math.ceil(
+    students.filter((student) => student.name.toLowerCase().includes(search.toLowerCase())).length / studentsPerPage,
+);
     // ADD STUDENT
 
     const addStudent = async () => {
@@ -294,36 +307,44 @@ function App() {
             {/* STUDENT LIST */}
 
             <div className="students-container">
-                {students
-                    .filter((student) => student.name.toLowerCase().includes(search.toLowerCase()))
-                    .map((student) => (
-                        <div className="student-card" key={student.id}>
-                            <h2>{student.name}</h2>
+                {currentStudents.map((student) => (
+                    <div className="student-card" key={student.id}>
+                        <h2>{student.name}</h2>
 
-                            <p>Age: {student.age}</p>
+                        <p>Age: {student.age}</p>
 
-                            <p>Course: {student.course}</p>
+                        <p>Course: {student.course}</p>
 
-                            <button
-                                className="edit-btn"
-                                onClick={() => {
-                                    setName(student.name);
+                        <button
+                            className="edit-btn"
+                            onClick={() => {
+                                setName(student.name);
 
-                                    setAge(student.age);
+                                setAge(student.age);
 
-                                    setCourse(student.course);
+                                setCourse(student.course);
 
-                                    setEditingId(student.id);
-                                    setShowModal(true);
-                                }}>
-                                Edit
-                            </button>
+                                setEditingId(student.id);
+                                setShowModal(true);
+                            }}>
+                            Edit
+                        </button>
 
-                            <button className="delete-btn" onClick={() => deleteStudent(student.id)}>
-                                Delete
-                            </button>
-                        </div>
-                    ))}
+                        <button className="delete-btn" onClick={() => deleteStudent(student.id)}>
+                            Delete
+                        </button>
+                    </div>
+                ))}
+            </div>
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setCurrentPage(index + 1)}
+                        className={currentPage === index + 1 ? 'active-page' : ''}>
+                        {index + 1}
+                    </button>
+                ))}
             </div>
         </div>
     );

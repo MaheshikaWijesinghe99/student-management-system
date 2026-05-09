@@ -294,5 +294,52 @@ h1 {
 }
 
 .close-btn {
-    background: red !important;
+    background: rgba(255, 128, 0, 0.675) !important;
+}
+
+/* PAGINATION */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #1e293b;
+    color: white;
+}
+
+.active-page {
+    background: #38bdf8 !important;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    .modal {
+        width: 90%;
+    }
+
+    .form-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-box input {
+        width: 90%;
+    }
+
+    .chart-section {
+        overflow-x: auto;
+    }
+
+    .students-container {
+        grid-template-columns: 1fr;
+    }
 }
