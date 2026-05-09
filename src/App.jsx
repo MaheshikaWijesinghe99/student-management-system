@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import { db } from './firebase';
 
-import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 function App() {
     const [name, setName] = useState('');
@@ -14,6 +14,10 @@ function App() {
     const [course, setCourse] = useState('');
 
     const [students, setStudents] = useState([]);
+
+    const [search, setSearch] = useState('');
+
+    const [editingId, setEditingId] = useState(null);
 
     const studentsCollection = collection(db, 'students');
 
@@ -63,6 +67,28 @@ function App() {
         getStudents();
     };
 
+    // UPDATE STUDENT
+
+    const updateStudent = async (id) => {
+        const studentDoc = doc(db, 'students', id);
+
+        await updateDoc(studentDoc, {
+            name: name,
+            age: age,
+            course: course,
+        });
+
+        alert('Student Updated');
+
+        setName('');
+        setAge('');
+        setCourse('');
+
+        setEditingId(null);
+
+        getStudents();
+    };
+
     useEffect(() => {
         getStudents();
     }, []);
@@ -70,6 +96,13 @@ function App() {
     return (
         <div className="container">
             <h1>Student Management System</h1>
+            <div className="stats-container">
+                <div className="stat-card">
+                    <h2>{students.length}</h2>
+
+                    <p>Total Students</p>
+                </div>
+            </div>
 
             {/* FORM */}
 
@@ -80,25 +113,54 @@ function App() {
 
                 <input type="text" placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
 
-                <button onClick={addStudent}>Add Student</button>
+                {editingId ? (
+                    <button onClick={() => updateStudent(editingId)}>Update Student</button>
+                ) : (
+                    <button onClick={addStudent}>Add Student</button>
+                )}
+            </div>
+
+            <div className="search-box">
+                <input
+                    type="text"
+                    placeholder="Search Students..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
             </div>
 
             {/* STUDENT LIST */}
 
             <div className="students-container">
-                {students.map((student) => (
-                    <div className="student-card" key={student.id}>
-                        <h2>{student.name}</h2>
+                {students
+                    .filter((student) => student.name.toLowerCase().includes(search.toLowerCase()))
+                    .map((student) => (
+                        <div className="student-card" key={student.id}>
+                            <h2>{student.name}</h2>
 
-                        <p>Age: {student.age}</p>
+                            <p>Age: {student.age}</p>
 
-                        <p>Course: {student.course}</p>
+                            <p>Course: {student.course}</p>
 
-                        <button className="delete-btn" onClick={() => deleteStudent(student.id)}>
-                            Delete
-                        </button>
-                    </div>
-                ))}
+                            <button
+                                className="edit-btn"
+                                onClick={() => {
+                                    setName(student.name);
+
+                                    setAge(student.age);
+
+                                    setCourse(student.course);
+
+                                    setEditingId(student.id);
+                                }}>
+                                Edit
+                            </button>
+
+                            <button className="delete-btn" onClick={() => deleteStudent(student.id)}>
+                                Delete
+                            </button>
+                        </div>
+                    ))}
             </div>
         </div>
     );
