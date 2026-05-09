@@ -11,6 +11,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
 function App() {
     const auth = getAuth();
 
@@ -33,6 +35,12 @@ function App() {
     const [darkMode, setDarkMode] = useState(true);
 
     const studentsCollection = collection(db, 'students');
+    const chartData = [
+        {
+            name: 'Students',
+            total: students.length,
+        },
+    ];
 
     // ADD STUDENT
 
@@ -191,6 +199,22 @@ function App() {
                 </div>
             </div>
             {loading && <div className="loading">Loading...</div>}
+
+            <div className="chart-section">
+                <h2>Student Analytics</h2>
+
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData}>
+                        <XAxis dataKey="name" />
+
+                        <YAxis />
+
+                        <Tooltip />
+
+                        <Bar dataKey="total" fill="#38bdf8" />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
 
             {/* FORM */}
 
