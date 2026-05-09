@@ -7,6 +7,9 @@ import { db } from './firebase';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const auth = getAuth();
@@ -42,7 +45,7 @@ function App() {
             course: course,
         });
 
-        alert('Student Added');
+        toast.success('Student Added');
 
         setName('');
         setAge('');
@@ -85,7 +88,7 @@ function App() {
             course: course,
         });
 
-        alert('Student Updated');
+        toast.success('Student Updated');
 
         setName('');
         setAge('');
@@ -104,9 +107,9 @@ function App() {
 
             setUser(userCredential.user);
 
-            alert('Registration Successful');
+            toast.success('Registration Successful');
         } catch (error) {
-            alert(error.message);
+            toast.error(error.message);
         }
     };
     // LOGIN
@@ -117,9 +120,9 @@ function App() {
 
             setUser(userCredential.user);
 
-            alert('Login Successful');
+            toast.success('Login Successful');
         } catch (error) {
-            alert(error.message);
+            toast.error(error.message);
         }
     };
     // LOGOUT
@@ -129,7 +132,7 @@ function App() {
 
         setUser(null);
 
-        alert('Logged Out');
+        toast.info('Logged Out');
     };
     useEffect(() => {
         getStudents();
@@ -137,6 +140,7 @@ function App() {
     if (!user) {
         return (
             <div className="auth-container">
+                <ToastContainer />
                 <div className="auth-box">
                     <h1>Student Management Login</h1>
 
@@ -160,6 +164,7 @@ function App() {
     }
     return (
         <div className="container">
+            <ToastContainer />
             <h1>Student Management System</h1>
             <button className="logout-btn" onClick={logoutUser}>
                 Logout
