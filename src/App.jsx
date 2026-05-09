@@ -28,12 +28,16 @@ function App() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const [darkMode, setDarkMode] = useState(true);
 
     const studentsCollection = collection(db, 'students');
 
     // ADD STUDENT
 
     const addStudent = async () => {
+        setLoading(true);
         if (name === '' || age === '' || course === '') {
             alert('Please fill all fields');
             return;
@@ -52,6 +56,7 @@ function App() {
         setCourse('');
 
         getStudents();
+        setLoading(false);
     };
 
     // GET STUDENTS
@@ -70,16 +75,19 @@ function App() {
     // DELETE STUDENT
 
     const deleteStudent = async (id) => {
+        setLoading(true);
         const studentDoc = doc(db, 'students', id);
 
         await deleteDoc(studentDoc);
 
         getStudents();
+        setLoading(false);
     };
 
     // UPDATE STUDENT
 
     const updateStudent = async (id) => {
+        setLoading(true);
         const studentDoc = doc(db, 'students', id);
 
         await updateDoc(studentDoc, {
@@ -97,6 +105,7 @@ function App() {
         setEditingId(null);
 
         getStudents();
+        setLoading(false);
     };
 
     // REGISTER
@@ -143,6 +152,11 @@ function App() {
                 <ToastContainer />
                 <div className="auth-box">
                     <h1>Student Management Login</h1>
+                    <div className="top-bar">
+                        <button className="theme-btn" onClick={() => setDarkMode(!darkMode)}>
+                            {darkMode ? 'Light Mode' : 'Dark Mode'}
+                        </button>
+                    </div>
 
                     <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
@@ -163,7 +177,7 @@ function App() {
         );
     }
     return (
-        <div className="container">
+        <div className={darkMode ? 'container dark' : 'container light'}>
             <ToastContainer />
             <h1>Student Management System</h1>
             <button className="logout-btn" onClick={logoutUser}>
@@ -176,6 +190,7 @@ function App() {
                     <p>Total Students</p>
                 </div>
             </div>
+            {loading && <div className="loading">Loading...</div>}
 
             {/* FORM */}
 

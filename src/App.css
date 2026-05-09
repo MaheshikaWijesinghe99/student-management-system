@@ -174,3 +174,43 @@ h1 {
     color: white;
     cursor: pointer;
 }
+
+/* THEMES */
+
+.dark {
+    background: #0f172a;
+    color: white;
+    min-height: 100vh;
+}
+
+.light {
+    background: #f1f5f9;
+    color: black;
+    min-height: 100vh;
+}
+
+/* TOP BAR */
+
+.top-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.theme-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    background: #38bdf8;
+    color: white;
+    cursor: pointer;
+}
+
+/* LOADING */
+
+.loading {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #38bdf8;
+}
