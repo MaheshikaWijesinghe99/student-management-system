@@ -4,9 +4,13 @@ import { useState, useEffect } from 'react';
 
 import { db } from './firebase';
 
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
 function App() {
+    const auth = getAuth();
+
     const [name, setName] = useState('');
 
     const [age, setAge] = useState('');
@@ -18,6 +22,9 @@ function App() {
     const [search, setSearch] = useState('');
 
     const [editingId, setEditingId] = useState(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [user, setUser] = useState(null);
 
     const studentsCollection = collection(db, 'students');
 
@@ -89,13 +96,74 @@ function App() {
         getStudents();
     };
 
+    // REGISTER
+
+    const registerUser = async () => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+            setUser(userCredential.user);
+
+            alert('Registration Successful');
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+    // LOGIN
+
+    const loginUser = async () => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+            setUser(userCredential.user);
+
+            alert('Login Successful');
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+    // LOGOUT
+
+    const logoutUser = async () => {
+        await signOut(auth);
+
+        setUser(null);
+
+        alert('Logged Out');
+    };
     useEffect(() => {
         getStudents();
     }, []);
+    if (!user) {
+        return (
+            <div className="auth-container">
+                <div className="auth-box">
+                    <h1>Student Management Login</h1>
 
+                    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <button onClick={registerUser}>Register</button>
+
+                    <button className="login-btn" onClick={loginUser}>
+                        Login
+                    </button>
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container">
             <h1>Student Management System</h1>
+            <button className="logout-btn" onClick={logoutUser}>
+                Logout
+            </button>
             <div className="stats-container">
                 <div className="stat-card">
                     <h2>{students.length}</h2>
@@ -108,11 +176,8 @@ function App() {
 
             <div className="form-container">
                 <input type="text" placeholder="Student Name" value={name} onChange={(e) => setName(e.target.value)} />
-
                 <input type="number" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
-
                 <input type="text" placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
-
                 {editingId ? (
                     <button onClick={() => updateStudent(editingId)}>Update Student</button>
                 ) : (
