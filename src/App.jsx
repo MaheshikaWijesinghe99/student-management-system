@@ -33,6 +33,7 @@ function App() {
     const [loading, setLoading] = useState(false);
 
     const [darkMode, setDarkMode] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     const studentsCollection = collection(db, 'students');
     const chartData = [
@@ -218,15 +219,10 @@ function App() {
 
             {/* FORM */}
 
-            <div className="form-container">
-                <input type="text" placeholder="Student Name" value={name} onChange={(e) => setName(e.target.value)} />
-                <input type="number" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
-                <input type="text" placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
-                {editingId ? (
-                    <button onClick={() => updateStudent(editingId)}>Update Student</button>
-                ) : (
-                    <button onClick={addStudent}>Add Student</button>
-                )}
+            <div className="open-modal-section">
+                <button className="open-modal-btn" onClick={() => setShowModal(true)}>
+                    Add New Student
+                </button>
             </div>
 
             <div className="search-box">
@@ -238,6 +234,63 @@ function App() {
                 />
             </div>
 
+            {showModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h2>{editingId ? 'Edit Student' : 'Add Student'}</h2>
+
+                        <input
+                            type="text"
+                            placeholder="Student Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+
+                        <input type="number" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
+
+                        <input
+                            type="text"
+                            placeholder="Course"
+                            value={course}
+                            onChange={(e) => setCourse(e.target.value)}
+                        />
+
+                        {editingId ? (
+                            <button
+                                onClick={() => {
+                                    updateStudent(editingId);
+                                    setShowModal(false);
+                                }}>
+                                Update Student
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    addStudent();
+                                    setShowModal(false);
+                                }}>
+                                Add Student
+                            </button>
+                        )}
+
+                        <button
+                            className="close-btn"
+                            onClick={() => {
+                                setShowModal(false);
+
+                                setEditingId(null);
+
+                                setName('');
+
+                                setAge('');
+
+                                setCourse('');
+                            }}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
             {/* STUDENT LIST */}
 
             <div className="students-container">
@@ -261,6 +314,7 @@ function App() {
                                     setCourse(student.course);
 
                                     setEditingId(student.id);
+                                    setShowModal(true);
                                 }}>
                                 Edit
                             </button>

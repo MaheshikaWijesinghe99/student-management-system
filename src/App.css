@@ -229,3 +229,70 @@ h1 {
     margin-bottom: 30px;
     color: #38bdf8;
 }
+
+/* OPEN BUTTON */
+
+.open-modal-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.open-modal-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 12px;
+    background: #38bdf8;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* MODAL */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: #1e293b;
+    padding: 40px;
+    border-radius: 20px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal h2 {
+    text-align: center;
+    color: #38bdf8;
+}
+
+.modal input {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+}
+
+.modal button {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #38bdf8;
+    color: white;
+    cursor: pointer;
+}
+
+.close-btn {
+    background: red !important;
+}
